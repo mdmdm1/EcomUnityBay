@@ -3,7 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
+const setupSwagger = require("./swagger");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ mongoose
 // Middleware
 app.use(express.json());
 
+setupSwagger(app);
 // Routes
 app.use("/api", productRoutes);
 app.use("/api/auth", authRoutes);
@@ -26,3 +28,5 @@ app.use("/api/auth", authRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
