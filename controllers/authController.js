@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const register = async (req, res) => {
   const { username, mail, password } = req.body;
   try {
-    const newUser = User({ username, mail, password });
+    const newUser = new User({ username, mail, password });
 
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });
@@ -22,7 +22,7 @@ const login = async (req, res) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid mail or password" });
     }
-    const token = jwt.sign({ userId: user._id }, "your_jwt_secret", {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.json({ token });
